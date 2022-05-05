@@ -1,0 +1,27 @@
+version: '3'
+services:
+  postgres:
+    container_name: boilerplate-nodejs-rest-api-postgres
+    image: postgres:11.2-alpine
+    ports:
+      - '${POSTGRES_PORT}:5432'
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: boilerplate-nodejs-rest-api-db
+    volumes:
+      - postgresqldb:/var/lib/postgresql/data
+  pgadmin:
+    container_name: boilerplate-nodejs-rest-api-pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - '${PGADMIN_PORT}:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: demo@demo.dev
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_CONFIG_SERVER_MODE: 'True'
+    volumes:
+      - pgadmin:/var/lib/pgadmin/data
+volumes:
+  postgresqldb:
+  pgadmin:
