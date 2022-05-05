@@ -7,6 +7,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset",
     "dev": "nodemon --watch"
   },
   "devDependencies": {
@@ -37,5 +39,9 @@
   "engines": {
     "node": "16",
     "yarn": "^1.22"
+  },
+  "prisma": {
+    "schema": "src/database/prisma/schema.prisma",
+    "seed": "ts-node -r tsconfig-paths/register src/database/prisma/seed/index.ts"
   }
 }
