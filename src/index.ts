@@ -1,3 +1,4 @@
+import baseRouter from '@src/v1/routes';
 import v1UserRouter from '@src/v1/routes/userRoutes';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -17,6 +18,7 @@ export const createServer = (): Application => {
   app.use(cors());
   app.use(express.json());
 
+  app.use('/', baseRouter);
   app.use('/api/v1/users', v1UserRouter);
 
   app.use(errorHandler);
