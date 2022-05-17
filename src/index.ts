@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import http from 'http';
 import { AddressInfo } from 'net';
+import { errorHandler } from './middlewares/errorHandler';
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ export const createServer = (): Application => {
   app.use(express.json());
 
   app.use('/api/v1/users', v1UserRouter);
+
+  app.use(errorHandler);
 
   return app;
 };

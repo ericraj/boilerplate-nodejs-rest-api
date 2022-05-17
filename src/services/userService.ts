@@ -35,7 +35,7 @@ export const createNewUser = async (newUser: NewUser) => {
   if (existUser) {
     throw {
       status: 400,
-      message: `User with the email '${newUser.email}' already exists`,
+      message: `User with email '${newUser.email}' already exists`,
     };
   }
 
@@ -52,7 +52,7 @@ export const updateOneUser = async (userId: number, data: Partial<NewUser>) => {
     if (existUser && existUser.id !== userId) {
       throw {
         status: 400,
-        message: `User with the email '${data.email}' already exists`,
+        message: `User with email '${data.email}' already exists`,
       };
     }
   }
