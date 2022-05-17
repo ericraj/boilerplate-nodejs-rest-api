@@ -10,7 +10,7 @@ const { NODE_ENV } = process.env;
 module.exports = {
   entry: {
     index: './src/index.ts',
-    seed: './src/prisma/seed/index.ts',
+    seed: './src/database/prisma/seed/index.ts',
   },
   mode: NODE_ENV,
   target: 'node',

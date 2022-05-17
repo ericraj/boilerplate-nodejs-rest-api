@@ -9,7 +9,12 @@
   "scripts": {
     "db:seed": "prisma db seed",
     "db:reset": "prisma migrate reset",
-    "dev": "prisma generate && nodemon --watch"
+    "db:deploy": "prisma migrate deploy",
+    "clear": "rimraf ./dist",
+    "dev": "prisma generate && nodemon --watch",
+    "build": "yarn clear && NODE_ENV=production webpack && yarn db:deploy && yarn db:seed",
+    "start": "node dist/index.js",
+    "deploy": "git push heroku main"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
@@ -20,6 +25,7 @@
     "nodemon": "^2.0.16",
     "prettier": "^2.6.2",
     "prisma": "^3.13.0",
+    "rimraf": "^3.0.2",
     "ts-loader": "^9.3.0",
     "ts-node": "^10.7.0",
     "tsconfig-paths": "^4.0.0",
