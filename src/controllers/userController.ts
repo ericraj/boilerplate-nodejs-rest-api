@@ -1,6 +1,5 @@
 import { userService } from '@src/services';
-import { NewUser } from '@src/types/user';
-import { formatData } from '@src/utils';
+import { dataFormatter, errorFormatter } from '@src/utils';
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
@@ -11,13 +10,14 @@ export const getAllUsers = async (
 ) => {
   const { take, skip } = req.query;
   try {
+    validationResult(req).throw();
     const allUsers = await userService.getAllUsers({
       take: take ? Number(take) : undefined,
       skip: take ? Number(skip) : undefined,
     });
-    return formatData(res, allUsers);
+    return dataFormatter(res, allUsers);
   } catch (err) {
-    next(err);
+    next(errorFormatter(err));
   }
 };
 
@@ -26,13 +26,12 @@ export const getOneUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { userId } = req.params;
   try {
     validationResult(req).throw();
-    const user = await userService.getOneUser(Number(userId));
-    return formatData(res, user);
+    const user = await userService.getOneUser(Number(req.params.id));
+    return dataFormatter(res, user);
   } catch (err) {
-    next(err);
+    next(errorFormatter(err));
   }
 };
 
@@ -41,13 +40,12 @@ export const createNewUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const newUser: NewUser = req.body;
   try {
     validationResult(req).throw();
-    const createdUser = await userService.createNewUser(newUser);
-    return formatData(res, createdUser, 201);
+    const createdUser = await userService.createNewUser(req.body);
+    return dataFormatter(res, createdUser, 201);
   } catch (err) {
-    next(err);
+    next(errorFormatter(err));
   }
 };
 
@@ -56,16 +54,17 @@ export const updateOneUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { userId } = req.params;
   try {
+    console.log('req.body', req.body);
     validationResult(req).throw();
+
     const updatedUser = await userService.updateOneUser(
-      Number(userId),
+      Number(req.params.id),
       req.body,
     );
-    return formatData(res, updatedUser);
+    return dataFormatter(res, updatedUser);
   } catch (err) {
-    next(err);
+    next(errorFormatter(err));
   }
 };
 
@@ -74,12 +73,11 @@ export const deleteOneUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { userId } = req.params;
   try {
     validationResult(req).throw();
-    await userService.deleteOneUser(Number(userId));
-    return formatData(res, null, 204);
+    await userService.deleteOneUser(Number(req.params.id));
+    return dataFormatter(res, null, 204);
   } catch (err) {
-    next(err);
+    next(errorFormatter(err));
   }
 };

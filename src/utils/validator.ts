@@ -1,17 +1,34 @@
 import { check } from 'express-validator';
 
-export const emailValidator = [
-  check('email', 'email is required').notEmpty(),
-  check('email', 'email is not valid').isEmail(),
+export const idValidator = [check('id', 'is not an integer').isInt()];
+
+export const userValidator = [
+  check(['phone', 'website'], 'is not a string').isString().optional(),
 ];
 
-export const userIdValidator = [
-  check('userId', 'userId is not a number').isNumeric(),
+export const createUserValidator = [
+  ...userValidator,
+  check(['name', 'email'])
+    .notEmpty()
+    .withMessage('is required')
+    .isString()
+    .withMessage('is not a string'),
+  check('email', 'is not a valid email').isEmail(),
 ];
 
-export const newUserValidator = [
-  ...emailValidator,
-  check('name', 'name is required').notEmpty(),
+export const updateUserValidator = [
+  ...idValidator,
+  ...userValidator,
+  check('email', 'is not a valid email').isEmail().optional(),
+  check('name')
+    .isString()
+    .withMessage('is not a string')
+    .not()
+    .isEmpty()
+    .withMessage('empty string is not valid')
+    .optional(),
 ];
 
-export const updateUserValidator = [...userIdValidator, ...emailValidator];
+export const paginationQueryParamsValidator = [
+  check(['take', 'skip'], 'is not an integer').isInt().optional(),
+];

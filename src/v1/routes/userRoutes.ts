@@ -1,21 +1,22 @@
 import { userController } from '@src/controllers';
 import {
-  newUserValidator,
+  createUserValidator,
+  idValidator,
+  paginationQueryParamsValidator,
   updateUserValidator,
-  userIdValidator,
 } from '@src/utils/validator';
 import express from 'express';
 
 const router = express.Router();
 
-router.get('/', userController.getAllUsers);
+router.get('/', paginationQueryParamsValidator, userController.getAllUsers);
 
-router.get('/:userId', userIdValidator, userController.getOneUser);
+router.get('/:id', idValidator, userController.getOneUser);
 
-router.post('/', newUserValidator, userController.createNewUser);
+router.post('/', createUserValidator, userController.createNewUser);
 
-router.put('/:userId', updateUserValidator, userController.updateOneUser);
+router.put('/:id', updateUserValidator, userController.updateOneUser);
 
-router.delete('/:userId', userIdValidator, userController.deleteOneUser);
+router.delete('/:id', idValidator, userController.deleteOneUser);
 
 export default router;

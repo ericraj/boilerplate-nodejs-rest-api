@@ -1,12 +1,13 @@
 import { Response } from 'express';
 
-export const formatData = (res: Response, data: any, statusCode?: number) => {
-  return res.status(statusCode || 200).json({ status: 'OK', data });
+export const dataFormatter = (res: Response, data: any, status?: number) => {
+  return res.status(status || 200).json({ status: 'OK', data });
 };
 
-export const formatError = (res: Response, err: any) => {
-  return res.status(err?.status || 500).json({
-    status: 'FAILED',
-    data: { error: err?.meta?.cause || err?.message || err },
-  });
+export const errorFormatter = (error: any) => {
+  if (error.array) {
+    return { name: 'ValidatorError', details: error.array() };
+  }
+
+  return error;
 };

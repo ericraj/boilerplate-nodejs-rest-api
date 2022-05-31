@@ -1,5 +1,4 @@
 import { Prisma, PrismaClient, User } from '@prisma/client';
-import { NewUser } from '@src/types/user';
 
 const prisma = new PrismaClient();
 
@@ -13,10 +12,9 @@ export const getAllUsers = async (
   }
 };
 
-export const getOneUser = async (userId: number) => {
+export const getOneUser = async (id: number) => {
   try {
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    return user;
+    return prisma.user.findUnique({ where: { id }, rejectOnNotFound: true });
   } catch (error) {
     throw error;
   }
@@ -24,50 +22,35 @@ export const getOneUser = async (userId: number) => {
 
 export const getUserByEmail = async (email: string) => {
   try {
-    return prisma.user.findUnique({ where: { email } });
+    return prisma.user.findUnique({ where: { email }, rejectOnNotFound: true });
   } catch (error) {
     throw error;
   }
 };
 
-export const createNewUser = async (newUser: NewUser) => {
-  const existUser = await getUserByEmail(newUser.email);
-  if (existUser) {
-    throw {
-      status: 400,
-      message: `User with email '${newUser.email}' already exists`,
-    };
-  }
-
+export const createNewUser = async (data: Prisma.UserCreateInput) => {
   try {
-    return prisma.user.create({ data: { ...newUser } });
+    return prisma.user.create({ data });
   } catch (error: any) {
     throw error;
   }
 };
 
-export const updateOneUser = async (userId: number, data: Partial<NewUser>) => {
-  if (data.email) {
-    const existUser = await getUserByEmail(data.email);
-    if (existUser && existUser.id !== userId) {
-      throw {
-        status: 400,
-        message: `User with email '${data.email}' already exists`,
-      };
-    }
-  }
-
+export const updateOneUser = async (
+  id: number,
+  data: Prisma.UserUpdateInput,
+) => {
   try {
-    return prisma.user.update({ where: { id: userId }, data });
+    console.log('data', data);
+    return prisma.user.update({ where: { id }, data });
   } catch (error: any) {
     throw error;
   }
 };
 
-export const deleteOneUser = async (userId: number) => {
+export const deleteOneUser = async (id: number) => {
   try {
-    const deletedUser = await prisma.user.delete({ where: { id: userId } });
-    return deletedUser;
+    return prisma.user.delete({ where: { id } });
   } catch (error) {
     throw error;
   }
