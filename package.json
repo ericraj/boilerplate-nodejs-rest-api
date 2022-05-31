@@ -45,10 +45,11 @@
   },
   "engines": {
     "node": "16",
-    "yarn": "^1.22"
+    "yarn": "3.2.1"
   },
   "prisma": {
     "schema": "src/database/prisma/schema.prisma",
     "seed": "ts-node -r tsconfig-paths/register src/database/prisma/seed/index.ts"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }
