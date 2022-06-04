@@ -3,7 +3,7 @@ import { dataFormatter, errorFormatter } from '@src/utils';
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
-export const getAllUsers = async (
+export const getManyUser = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -11,11 +11,11 @@ export const getAllUsers = async (
   const { take, skip } = req.query;
   try {
     validationResult(req).throw();
-    const allUsers = await userService.getAllUsers({
+    const result = await userService.getManyUser({
       take: take ? Number(take) : undefined,
       skip: take ? Number(skip) : undefined,
     });
-    return dataFormatter(res, allUsers);
+    return dataFormatter(res, result);
   } catch (err) {
     next(errorFormatter(err));
   }

@@ -9,7 +9,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/', paginationQueryParamsValidator, userController.getAllUsers);
+router.get('/', paginationQueryParamsValidator, userController.getManyUser);
 
 router.get('/:id', idValidator, userController.getOneUser);
 
