@@ -1,4 +1,3 @@
-import baseRouter from '@src/v1/routes';
 import v1UserRouter from '@src/v1/routes/userRoutes';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -6,6 +5,7 @@ import express, { Application } from 'express';
 import http from 'http';
 import { AddressInfo } from 'net';
 import { errorHandler } from './middlewares/errorHandler';
+import v1SwaggerDocs from './v1/swagger/swagger';
 
 dotenv.config();
 
@@ -18,7 +18,6 @@ export const createServer = (): Application => {
   app.use(cors());
   app.use(express.json());
 
-  app.use('/', baseRouter);
   app.use('/api/v1/users', v1UserRouter);
 
   app.use(errorHandler);
@@ -33,6 +32,8 @@ const startServer = async () => {
     console.log(
       `🚀 API is listening on http://${addressInfo.address}:${addressInfo.port}`,
     );
+
+    v1SwaggerDocs(app);
   });
 };
 
